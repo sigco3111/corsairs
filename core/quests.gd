@@ -24,13 +24,13 @@ func generate_offer(from_island: String, day: int, rng: RandomNumberGenerator) -
 			var goods: Array = Goods.all_ids()
 			quest["goods"] = goods[rng.randi_range(0, goods.size() - 1)]
 			quest["units"] = rng.randi_range(20, 80)
-			quest["title"] = "Deliver cargo to %s" % World.island(dest)["name"]
+			quest["title"] = "%s행 화물 배송" % World.island(dest)["name"]
 		"hunt":
 			quest["target_ship"] = ["lugger", "sloop", "barque", "brig"][rng.randi_range(0, 3)]
 			quest["reward"] += 400
-			quest["title"] = "Sink a pirate near %s" % World.island(dest)["name"]
+			quest["title"] = "%s 근해 해적 격침" % World.island(dest)["name"]
 		"passenger":
-			quest["title"] = "Carry a passenger to %s" % World.island(dest)["name"]
+			quest["title"] = "%s행 승객 수송" % World.island(dest)["name"]
 	return quest
 
 

@@ -1,161 +1,107 @@
-# ⚓ Corsairs: Wind of Freedom
+# ⚓ Corsairs: Wind of Freedom — 한국어판
 
-[![Tests](https://github.com/Elkhan-Isayev/corsairs/actions/workflows/tests.yml/badge.svg)](https://github.com/Elkhan-Isayev/corsairs/actions/workflows/tests.yml)
+[![Tests](https://github.com/sigco3111/corsairs/actions/workflows/tests.yml/badge.svg)](https://github.com/sigco3111/corsairs/actions/workflows/tests.yml)
 [![Godot 4.7](https://img.shields.io/badge/Godot-4.7-478cbf?logo=godotengine&logoColor=white)](https://godotengine.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An open-source, **built-from-scratch** remake made with **Godot 4.7**, inspired by [Pirates of the Caribbean (2003)](https://en.wikipedia.org/wiki/Pirates_of_the_Caribbean_(video_game)) — known in Russia as *Sea Dogs II* («Корсары 2», Akella). One codebase, every platform: **Windows 10/11, macOS, Linux, and the browser**.
+> 이 저장소는 [Elkhan-Isayev/corsairs](https://github.com/Elkhan-Isayev/corsairs)(MIT 라이선스)의 **한국어 번역 포크**입니다.
+> 원작자는 Elkhan Isayev이며, 원문 README는 [README.en.md](README.en.md)에 그대로 보존되어 있습니다.
 
-No original game assets are used. The ships, props, photo-scanned textures and skies are free CC0 assets from [Poly Haven](https://polyhaven.com); the houses, people, heraldry, painted art and portraits were generated with [Higgsfield](https://higgsfield.ai) and prepared in Blender by scripts in this repo; the music was composed with [Suno](https://suno.com).
+**Corsairs: Wind of Freedom**은 [Pirates of the Caribbean (2003)](https://en.wikipedia.org/wiki/Pirates_of_the_Caribbean_(video_game)) — 러시아에서는 *Sea Dogs II*(«Корсары 2», Akella)로 알려진 — 에서 영감을 받아 **Godot 4.7**로 처음부터 새로 만든 오픈소스 해양 RPG입니다. 원작 게임의 에셋은 전혀 사용되지 않았으며, 별도의 원본 게임 파일 없이 실행됩니다.
 
-## 🎮 Play now
+## 🎮 지금 플레이 (한국어판)
 
-<a href="https://elkhan-isayev.github.io/corsairs/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/%E2%96%B6%20PLAY%20IN%20BROWSER-elkhan--isayev.github.io%2Fcorsairs-2ea44f?style=for-the-badge" alt="PLAY IN BROWSER"></a>
+**https://sigco3111.github.io/corsairs/**
 
-Direct link: **<a href="https://elkhan-isayev.github.io/corsairs/" target="_blank" rel="noopener noreferrer">https://elkhan-isayev.github.io/corsairs/</a>** — no install needed, the web build is deployed to GitHub Pages automatically on every push.
+브라우저에서 바로 실행됩니다. 설치가 필요 없으며, main 브랜치에 푸시될 때마다 GitHub Actions가 웹 빌드를 자동으로 다시 만들어 Pages에 배포합니다. 데스크톱(키보드+마우스) 환경을 권장합니다.
+
+원본 영어판: https://elkhan-isayev.github.io/corsairs/
 
 ---
 
-## Screenshots
+## 스크린샷
 
-| Sea battle | Port town (walkable 3D) |
+| 해전 | 항구 마을 (걸어다니는 3D) |
 |---|---|
 | ![Sea battle](docs/screenshots/battle.png) | ![Port town](docs/screenshots/town.png) |
 
-| Boarding melee | Tavern interior |
+| 백병전 | 선술집 내부 |
 |---|---|
 | ![Boarding melee](docs/screenshots/boarding.png) | ![Tavern interior](docs/screenshots/interior.png) |
 
-| The open sea (world map) | Port menu |
+| 먼바다 (세계 지도) | 항구 메뉴 |
 |---|---|
 | ![The open sea](docs/screenshots/map.png) | ![Port menu](docs/screenshots/port.png) |
 
-| Main menu | Sea chart |
-|---|---|
-| ![Main menu](docs/screenshots/menu.png) | ![Sea chart](docs/screenshots/chart.png) |
+*위 스크린샷은 원본 영어판 화면입니다. 한국어판 화면은 아래 "한국어판 안내"에 추가될 수 있습니다.*
 
-## Features
+## 주요 특징
 
-- 🌊 **3D naval combat** — sail physics with a real wind model, independent port/starboard batteries, muzzle smoke from every gun, enemy AI, boarding, sinking — and **enemy squadrons of up to four sail**. Sink them all and the sea is yours: you keep sailing in open waters. Break away far enough and you escape to the world map.
-- 💣 **Four ammo types** with distinct damage profiles, just like the original: **cannonballs** (hull), **chain shot** (sails), **grapeshot** (crew), **bombs** (heavy, short-ranged).
-- 🗺️ **A sailable open sea** — the world map is a real 3D ocean, Sea Dogs style: steer your miniature ship between 7 islands held by four nations plus a pirate haven. Days pass as you sail (wages, provisions), other sails cruise the horizon — the hostile ones will chase you straight into a 3D battle, and if you take the helm beside a peaceful sail, that ship (or its whole squadron, up to four hulls) appears on the full-scale sea and cruises along beside you. Press `M` for the parchment sea chart, `E` to drop anchor at an island, `Enter` to take the helm and sail the full-scale sea.
-- 💰 **Living economy** — 16 trade goods; every colony has its own exports (cheap) and imports (expensive), prices react to stock levels and your Trade skill. Trade routes are profitable — and there's a unit test proving it.
-- ⚔️ **RPG system** — 10 skills (Leadership, Fencing, Navigation, Accuracy, Cannons, Boarding, Defense, Repair, Trade, Luck), levels, and skill points.
-- 🏴 **Nations & reputation** — England, France, Spain, Holland, and the Pirates; wars, diplomatic fallout for sinking ships, ports that close to hostile captains.
-- 📜 **Governor quests** — cargo delivery, pirate hunting, passengers; deadlines and reputation penalties.
-- 🛠️ **Port life** — market, shipyard with 11 ship classes (tartane → man-of-war) and trade-in, crew hiring, repairs.
-- 💾 **Save system** — JSON saves with autosave after every voyage.
-- ⛵ **Detailed period ships** — Poly Haven's 17th-century Dutch ships and pinnace (full PBR hulls, carved sterns, rigging, ratlines), prepared by `tools/blender/import_ships.py`: bow turned forward, sails split so they furl and unfurl, deck profile sampled for crews and boarding, ensign and pennant added. Every nation sails under its own tinted canvas and flies its own ensign (heraldry generated with Higgsfield).
-- 🧍 **Real 3D people** — the captain, sailors, townsmen and townswomen are textured character models generated with Higgsfield and rigged in Blender by `tools/blender/build_people.py`; walking, fencing and deck crews all drive their skeletons.
-- 🎨 **Painted art** — the main menu and port backdrops, an antique parchment sea chart and portraits of the governor, merchant, shipwright and your captain, generated with Higgsfield.
-- 🎵 **Orchestral soundtrack composed with [Suno](https://suno.com)** — an epic main theme for the menu and ports, a driving naval battle score and a sea-shanty voyage tune for the open sea. Towns have no music, only the surf of the harbor (synthesized by `tools/generate_music.gd`).
-- 🎥 **Free orbit camera** in battle — drag with the right mouse button, zoom with the wheel.
-- 🏘️ **Walkable 3D port towns, each one unique** — every island has its own street plan (market plaza, Dutch canal rows, hillside terraces, a ramshackle pirate cove…), light and weather. Colonial houses and the tavern are 3D models generated with Higgsfield (Hunyuan3D); streets, quays, walls and roofs use photo-scanned PBR textures; barrels, sea chests, harbor cannons and lanterns are Poly Haven models; palms are built in Blender. **Every building is enterable**: furnished tavern, store, shipyard and governor's mansion with NPCs to talk to.
-- 🌗 **Day & night cycle** — the sun wheels overhead in towns, at sea and in battle; dawn and dusk burn on the horizon, nights bring moonlight and lantern glow.
-- 🏃 **Living decks** — carriage guns and sailors wandering the deck of every ship.
-- 🕹️ **Arcade sailing** — the wind flavors your speed (±25% at most) but never stalls the ship; battles stay fast.
-- ⚔️ **Third-person boarding** — cross to the enemy deck and fight with your cutlass while both crews clash around you; win to take the prize.
-- ⛵ **Harbor mode** — board your ship at the quay, sail the bay past your own town, dock again or head for the open sea.
+- 🌊 **3D 해전** — 실제 바람 모델의 항해 물리, 좌현/우현 독립 포대, 포문마다 피어나는 연기, 적 AI, 백병전, 침몰, 그리고 최대 4척 편대. 모두 침몰시키면 바다는 당신의 것입니다. 충분히 멀어지면 세계 지도로 탈출할 수 있습니다.
+- 💣 **4종 탄약** — 원작처럼 피해 특성이 다른 **포탄**(선체), **사슬탄**(돛), **유산탄**(선원), **폭발탄**(중형·단사거리).
+- 🗺️ **직접 항해하는 먼바다** — 세계 지도가 실제 3D 바다입니다. 4개 국가와 해적 소굴이 나눠 가진 7개 섬 사이로 배를 몰 수 있습니다. 항해 중 날짜가 지나고(선원 임금, 식량 소모), 지평선의 다른 돛이 적이면 전투로 이어집니다. `M` — 양피지 해도, `E` — 섬에 닻 내리기, `Enter` — 직접 조타.
+- 💰 **살아있는 경제** — 16종 교역품. 식민지마다 수출품(저렴)과 수입품(고가)이 다르고, 재고 수준과 교역 스킬에 따라 가격이 변합니다.
+- ⚔️ **RPG 시스템** — 10개 스킬(통솔, 펜싱, 항해, 명중, 대포, 백병전, 방어, 수리, 교역, 행운), 레벨, 스킬 포인트.
+- 🏴 **국가와 평판** — 잉글랜드, 프랑스, 스페인, 네덜란드, 해적. 전쟁, 격침에 따른 외교적 대가, 적대적 선장에게 닫히는 항구.
+- 📜 **총독 퀘스트** — 화물 배송, 해적 토벌, 승객 수송. 기한과 평판 페널티.
+- 🛠️ **항구 생활** — 시장, 11개 선급(타르탄 → 맨 오브 워)을 다루는 조선소와 교체(trade-in), 선원 고용, 수리.
+- 💾 **세이브** — JSON 세이브, 항해 후 자동 저장.
+- 🏘️ **걸어다닐 수 있는 3D 항구 마을** — 섬마다 다른 거리 배치와 날씨. 선술집, 상점, 조선소, 총독부 등 **모든 건물에 입장 가능**하며 NPC와 대화할 수 있습니다.
+- 🌗 **낮과 밤 순환** — 마을, 바다, 전투에서 태양이 움직입니다.
+- ⚔️ **3인칭 백병전** — 적 갑판으로 건너가 커틀러스로 싸우고, 이기면 노획합니다.
+- 🎵 **오케스트라 사운드트랙** — Suno로 작곡된 메인 테마, 해전곡, 뱃노래.
 
-## Controls (sea battle)
+## 조작법 (해전)
 
-| Key | Action |
+| 키 | 동작 |
 |-----|--------|
-| `W` / `S` | Raise / furl sails |
-| `A` / `D` | Rudder left / right |
-| `Q` / `E` | Fire port / starboard broadside |
-| `R` | Cycle ammo type |
-| `B` | Board the enemy (get close first!) |
-| `RMB` drag | Orbit the camera |
-| Wheel | Zoom |
+| `W` / `S` | 돛 올리기 / 거두기 |
+| `A` / `D` | 키 좌 / 우 |
+| `Q` / `E` | 좌현 / 우현 일제사격 |
+| `R` | 탄약 종류 전환 |
+| `B` | 백병전 돌입 (먼저 바짝 붙을 것!) |
+| 우클릭 드래그 | 카메라 회전 |
+| 휠 | 줌 |
 
-On the open sea: `W/S/A/D` to sail, `M` — sea chart, `E` — drop anchor at an island, `Enter` — dock when near an island, otherwise take the helm (full-scale sailing; `Enter`/`Esc` returns to the map). In town: `WASD` to walk, `E` — enter buildings/board your ship, `Tab` — port menu.
+먼바다: `W/S/A/D` 항해, `M` 해도, `E` 닻 내리기, `Enter` 정박/조타.
+마을: `WASD` 걷기, `E` 건물 입장/승선, `Tab` 항구 메뉴.
 
-## Running the game
+## 한국어판 안내
 
-You only need [Godot 4.x](https://godotengine.org/download) (free, ~100 MB, no install required).
+- 게임 내 모든 UI 텍스트(메뉴, 항구, 시장, 조선소, 총독 퀘스트, 해전 HUD, 백병전, 로그 메시지), 교역품·선급·스킬·국가·섬 이름을 한국어로 번역했습니다.
+- 한글 표시를 위해 **나눔고딕(NanumGothic, SIL Open Font License)** 폰트를 추가했습니다. 2D UI뿐 아니라 3D 세계의 간판·섬 이름(Label3D)에도 적용됩니다.
+- 게임 ID·내부 키·원작자 표기는 원본을 유지했습니다. 음악·이미지 등 에셋은 원본과 동일합니다.
+- 번역 후 원본의 테스트(10개 스위트, 1,309개 검증)와 장면 스모크 테스트를 그대로 통과했고, Godot 4.7 웹 익스포트가 정상적으로 완료됨을 확인했습니다.
 
-```bash
-# macOS
-brew install --cask godot
+## 실행 / 빌드
 
-# then, from the project folder
-godot --path .
-```
-
-Or open the folder in the Godot editor and hit **F5**.
-
-## Tests
-
-The entire game core is covered by headless tests — **10 suites, ~1,100 assertions**, no window needed:
+[Godot 4.x](https://godotengine.org/download)만 있으면 됩니다(무료, ~100MB).
 
 ```bash
-godot --headless --path . -s tests/run_tests.gd     # core unit tests
-godot --headless --path . -s tests/smoke_scenes.gd  # smoke-walk through every scene
+godot --headless --path . -s tests/run_tests.gd     # 코어 단위 테스트
+godot --headless --path . -s tests/smoke_scenes.gd  # 장면 스모크 테스트
+godot --headless --path . --export-release "Web" build/web/index.html  # 웹 빌드
 ```
 
-The core (`core/`) has zero scene dependencies: every system is a plain class with injectable, seeded RNG, so combat, trading, boarding, and quests are all deterministic under test. CI runs both commands on every push.
+에디터에서 폴더를 열고 **F5**를 눌러도 됩니다.
 
-## Building for every platform
-
-Godot exports this single project to Windows, macOS, Linux, and the Web. Presets are already configured in `export_presets.cfg`.
-
-1. One-time: download export templates in the Godot editor — *Editor → Manage Export Templates → Download and Install*.
-2. Export from the command line:
-
-```bash
-godot --headless --path . --export-release "Windows 11 (x86_64)" build/windows/corsairs.exe
-godot --headless --path . --export-release "macOS (universal)"   build/macos/corsairs.zip
-godot --headless --path . --export-release "Linux (x86_64)"      build/linux/corsairs.x86_64
-godot --headless --path . --export-release "Web"                 build/web/index.html
-```
-
-The Windows build is a single self-contained 64-bit `.exe` (engine + assets embedded) — runs on Windows 10/11 with no dependencies. The web build can be hosted on any static hosting (itch.io, GitHub Pages).
-
-## Project structure
+## 프로젝트 구조
 
 ```
-core/      game logic — pure, scene-free, fully unit-tested
-  ship.gd, ship_types.gd    ships, 11 hull classes, cargo, damage
-  sailing.gd                wind model, speed & turning
-  combat.gd, ammo.gd        broadsides, ranges, 4 ammo types
-  boarding.gd               boarding fights & loot
-  character.gd              skills, XP, leveling, gold
-  goods.gd, market.gd       16 goods, colony markets, price dynamics
-  world.gd                  archipelago, nations, diplomacy, reputation
-  quests.gd                 governor quests
-  game_state.gd             aggregate state, voyages, encounters, save/load
-tests/     custom headless test framework + unit & smoke tests
-scenes/    main_menu, open_sea (sailable world map), port_town, port, sea (3D battle), boarding
-scripts/   scene scripts + the Game autoload (scene routing)
-assets/    ships, props, houses, people (glTF), PBR textures, HDRI skies, art, water shader, music
-tools/     Poly Haven fetcher, Blender import/build scripts, screenshot & ship-gallery capture, surf synthesizer
-docs/      screenshots used by this README
+core/      게임 로직 — 장면 의존 없음, 전부 단위 테스트됨
+tests/     헤드리스 테스트 프레임워크 + 단위/스모크 테스트
+scenes/    메인 메뉴, 먼바다(세계 지도), 항구 마을, 항구, 해전, 백병전
+scripts/   장면 스크립트 + Game 오토로드(장면 라우팅)
+assets/    선박, 소품, 건물, 인물(glTF), PBR 텍스처, HDRI 하늘, 음악
+tools/     Poly Haven 수집기, Blender 임포트 스크립트 등
+docs/      원본 README의 스크린샷
 ```
 
-### Design notes
+## 라이선스
 
-- **Logic and presentation are strictly separated.** Scenes are thin: they read state, call core methods, and render. Anything that affects gameplay lives in `core/` and lands with a test.
-- **Determinism first.** Every random roll goes through an injectable `RandomNumberGenerator`, so any battle or trade session can be reproduced from a seed.
-- **Free assets, reproducible pipeline.** `python3 tools/fetch_polyhaven.py` downloads the CC0 textures and models; the `tools/blender/*.py` scripts turn them (and the Higgsfield generations) into game-ready glTF. No engine addons; the test framework is ~80 lines of GDScript.
-- **Desktop first.** Native builds use Godot's Forward+ renderer (SSAO, SSIL, HDRI sky lighting, MSAA); the browser build runs the lighter Compatibility renderer.
+[MIT](LICENSE) — 원본 저장소의 라이선스를 그대로 따릅니다.
+나눔고딕 폰트는 [SIL Open Font License](assets/fonts/OFL.txt)로 배포됩니다.
 
-## Roadmap
+---
 
-- [x] On-deck fencing during boarding — third-person melee with both crews fighting around you
-- [x] Walkable port towns with enterable buildings
-- [x] Harbor sailing: board your ship and sail the bay before heading to open sea
-- [x] Open-sea world map you actually sail, with encounters visible as ships
-- [ ] Squadrons & officers (Leadership already gates squadron size)
-- [ ] Story campaign
-- [x] Music (Suno score) & harbor ambience
-- [ ] Sound effects
-- [ ] Localization (RU and others — the UI is English)
-
-## Legal
-
-This is a clean-room homage. It contains no code, models, textures, music, or text from the original game and is not affiliated with Akella. If you want to run the **original** Sea Dogs II on Windows 11 — buy the game (GOG/Steam) and check out the officially open-sourced [storm-engine](https://github.com/storm-devs/storm-engine).
-
-## License
-
-[MIT](LICENSE)
+*This is the Korean localization fork. For the original English README, see [README.en.md](README.en.md). Original project: [Elkhan-Isayev/corsairs](https://github.com/Elkhan-Isayev/corsairs).*

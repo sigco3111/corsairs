@@ -79,20 +79,20 @@ func _ready() -> void:
 	_build_hud()
 	_start_ocean_ambience()
 	if free_sail:
-		_log("Open waters. Wind %d°.  [Enter] — back to the world map." % int(Game.state.wind["from"]))
+		_log("넓은 바다. 바람 %d°.  [Enter] - 세계 지도로." % int(Game.state.wind["from"]))
 		if company.size() == 1:
 			var comp: Dictionary = Game.free_sail_company
-			_log("A %s %s cruises nearby." % [
+			_log("근처를 항해하는 %s %s." % [
 				World.NATIONS[comp["nation"]]["name"], comp["ship_type"]])
 		elif company.size() > 1:
-			_log("A %s squadron passes by — %d sail." % [
+			_log("%s 함대가 지나갑니다 - %d척." % [
 				World.NATIONS[Game.free_sail_company["nation"]]["name"], company.size()])
 	elif enemies.size() > 1:
-		_log("Enemy squadron: %d sail of %s (%s). Wind %d°." % [
+		_log("적 함대: %s (%s) 소속 %d척. 바람 %d°." % [
 			enemies.size(), enemy_ship.spec()["name"],
 			World.NATIONS[enemy_nation]["name"], int(Game.state.wind["from"])])
 	else:
-		_log("Enemy: %s \"%s\" (%s). Wind %d°." % [
+		_log("적: %s \"%s\" (%s). 바람 %d°." % [
 			enemy_ship.spec()["name"], enemy_ship.custom_name,
 			World.NATIONS[enemy_nation]["name"], int(Game.state.wind["from"])])
 
@@ -296,7 +296,7 @@ func _build_hud() -> void:
 	hud.add_child(bar_reload_r)
 	var lbl_bars := Label.new()
 	lbl_bars.position = Vector2(16, 678)
-	lbl_bars.text = "Q — port battery          E — starboard"
+	lbl_bars.text = "Q - 좌현 포대          E - 우현 포대"
 	lbl_bars.add_theme_font_size_override("font_size", 12)
 	lbl_bars.add_theme_color_override("font_color", Color("9fb4c8"))
 	hud.add_child(lbl_bars)
@@ -332,7 +332,7 @@ func _physics_process(delta: float) -> void:
 		player_ship.sail_setting = clampf(player_ship.sail_setting - 0.5, 0.0, 1.0)
 	if Input.is_action_just_pressed("next_ammo"):
 		player_ship.current_ammo = Ammo.next_type(player_ship.current_ammo)
-		_log("Loading: %s" % Ammo.get_type(player_ship.current_ammo)["name"])
+		_log("장전: %s" % Ammo.get_type(player_ship.current_ammo)["name"])
 
 	var p_speed: float = Sailing.ship_speed(player_ship, wind["from"], wind["strength"], nav)
 	var turn: float = Sailing.turn_speed(player_ship, p_speed, nav)
@@ -460,7 +460,7 @@ func _separate_hulls() -> void:
 
 func _try_player_fire(side: int) -> void:
 	if Combat.reload_progress(player_ship, side) < 1.0:
-		_log("The %s battery is still reloading!" % ("port" if side < 0 else "starboard"))
+		_log("%s 포대가 아직 재장전 중입니다!" % ("좌현" if side < 0 else "우현"))
 		return
 	# Aim at the nearest afloat enemy inside this side's arc.
 	var target: Dictionary = {}
@@ -473,22 +473,22 @@ func _try_player_fire(side: int) -> void:
 			best_d = d
 			target = e
 	if target.is_empty():
-		_log("No target in the %s arc!" % ("port" if side < 0 else "starboard"))
+		_log("%s 사격각 안에 목표가 없습니다!" % ("좌현" if side < 0 else "우현"))
 		return
 	var skills := {"accuracy": Game.state.character.skill("accuracy"), "cannons": Game.state.character.skill("cannons")}
 	var r: Dictionary = Combat.fire_broadside(player_ship, target["ship"], best_d, skills, Game.state.rng, side)
 	if int(r["fired"]) > 0:
 		player_node.fire_broadside_fx(side)
-	_report_broadside(r, "Our broadside", target["node"])
+	_report_broadside(r, "아군 일제사격", target["node"])
 
 
 func _report_broadside(r: Dictionary, who: String, target_node: Node3D) -> void:
 	if r["no_ammo"]:
-		_log("%s: out of shot!" % who)
+		_log("%s: 포탄이 없습니다!" % who)
 	elif r["out_of_range"]:
-		_log("%s: out of range." % who)
+		_log("%s: 사거리 밖입니다." % who)
 	elif r["fired"] > 0:
-		_log("%s: %d guns, %d hits." % [who, r["fired"], r["hits"]])
+		_log("%s: 포 %d문 발사, %d발 명중." % [who, r["fired"], r["hits"]])
 		_spawn_shot_visuals(target_node, int(r["hits"]))
 
 
@@ -559,14 +559,14 @@ func _enemy_ai_one(e: Dictionary, delta: float, wind: Dictionary) -> void:
 			var r: Dictionary = Combat.fire_broadside(ship, player_ship, dist, enemy_skills, Game.state.rng, side)
 			if r["fired"] > 0:
 				node.fire_broadside_fx(side)
-				_report_broadside(r, "Enemy broadside", player_node)
+				_report_broadside(r, "적 일제사격", player_node)
 			break
 
 
 ## Boarding hands the encounter over to the on-deck melee scene.
 func _try_boarding(dist: float) -> void:
 	if not Combat.can_board(dist / SPEED_SCALE, enemy_ship) and dist > 120.0:
-		_log("Close alongside to board!")
+		_log("백병전을 걸려면 옆에 바짝 붙으세요!")
 		return
 	Game.save_game()
 	Game.start_boarding(enemy_ship, enemy_nation)
@@ -574,26 +574,26 @@ func _try_boarding(dist: float) -> void:
 
 func _update_hud(dist: float, p_speed: float) -> void:
 	var wind: Dictionary = Game.state.wind
-	lbl_player.text = "%s (%s)\nHull: %d%%  Sails: %d%%  Crew: %d\nAmmo: %s (%d)  Sails: %s  Speed: %.1f kn" % [
+	lbl_player.text = "%s (%s)\n선체: %d%%  돛: %d%%  선원: %d\n탄약: %s (%d)  돛: %s  속도: %.1f노트" % [
 		player_ship.custom_name, player_ship.spec()["name"],
 		int(player_ship.hull_frac() * 100), int(player_ship.sails_frac() * 100), player_ship.crew,
 		Ammo.get_type(player_ship.current_ammo)["name"], player_ship.ammo_stock.get(player_ship.current_ammo, 0),
-		["furled", "half", "full"][int(player_ship.sail_setting * 2.0)], p_speed]
-	lbl_wind.text = "Wind: %d° / %.0f kn" % [int(wind["from"]), wind["strength"]]
+		["걷어낸", "반돛", "전돛"][int(player_ship.sail_setting * 2.0)], p_speed]
+	lbl_wind.text = "바람: %d° / %.0f노트" % [int(wind["from"]), wind["strength"]]
 	bar_reload.value = player_ship.reload_left
 	bar_reload_r.value = player_ship.reload_right
 	if free_sail:
 		lbl_enemy.text = ""
-		lbl_wind.text += "   [Enter — world map]"
+		lbl_wind.text += "   [Enter - 세계 지도]"
 		return
 	var afloat := _alive_count()
-	var squadron := "" if enemies.size() == 1 else "Squadron: %d/%d afloat\n" % [afloat, enemies.size()]
-	lbl_enemy.text = "%s%s (%s)\nHull: %d%%  Sails: %d%%\nCrew: %d  Distance: %d m" % [
+	var squadron := "" if enemies.size() == 1 else "함대: %d/%d척 항해 중\n" % [afloat, enemies.size()]
+	lbl_enemy.text = "%s%s (%s)\n선체: %d%%  돛: %d%%\n선원: %d  거리: %dm" % [
 		squadron, enemy_ship.custom_name, World.NATIONS[enemy_nation]["name"],
 		int(enemy_ship.hull_frac() * 100), int(enemy_ship.sails_frac() * 100),
 		enemy_ship.crew, int(dist)]
 	if dist < 120.0 and afloat > 0:
-		lbl_wind.text += "   [B — BOARD!]"
+		lbl_wind.text += "   [B - 백병전!]"
 
 
 func _check_battle_end(dist: float) -> void:
@@ -604,21 +604,21 @@ func _check_battle_end(dist: float) -> void:
 		if e["ship"].is_sunk() and not bool(e["sunk_handled"]):
 			e["sunk_handled"] = true
 			var outcome: Dictionary = Game.state.on_enemy_sunk(e["ship"], enemy_nation)
-			var msg := "%s is going down! XP +%d." % [e["ship"].spec()["name"], outcome["xp"]]
+			var msg := "%s 침몰! XP +%d." % [e["ship"].spec()["name"], outcome["xp"]]
 			if outcome["level_up"]:
-				msg += " Level up!"
+				msg += " 레벨 업!"
 			for q in outcome["completed_quests"]:
-				msg += " Quest completed: %s." % q["title"]
+				msg += " 퀘스트 완료: %s." % q["title"]
 			_sink_visual(e["node"])
 			_log(msg)
 	if player_ship.is_sunk():
-		_defeat("Your ship has been sunk...")
+		_defeat("당신의 배가 침몰했습니다...")
 	elif player_ship.is_crew_critical():
-		_defeat("Not enough crew left to handle the ship.")
+		_defeat("배를 운용할 선원이 부족합니다.")
 	elif _alive_count() == 0:
 		_victory_to_open_waters()
 	elif dist > ESCAPE_DISTANCE:
-		_finish_battle("You broke away from the enemy.")
+		_finish_battle("적에게서 벗어났습니다.")
 
 
 func _sink_visual(node: Node3D) -> void:
@@ -632,7 +632,7 @@ func _victory_to_open_waters() -> void:
 	free_sail = true
 	Music.play_sea()
 	Game.save_game()
-	_log("The sea is clear. Sail on — or press Enter for the world map.")
+	_log("바다가 평온해졌습니다. 계속 항해하거나 Enter로 세계 지도를 여세요.")
 
 
 ## Breaking away still returns to the world map (you fled the fight).
@@ -641,7 +641,7 @@ func _finish_battle(msg: String) -> void:
 	_log(msg)
 	Game.save_game()
 	var dlg := AcceptDialog.new()
-	dlg.title = "Battle over"
+	dlg.title = "전투 종료"
 	dlg.dialog_text = msg
 	dlg.confirmed.connect(func(): Game.goto_map())
 	dlg.canceled.connect(func(): Game.goto_map())
@@ -652,8 +652,8 @@ func _finish_battle(msg: String) -> void:
 func _defeat(msg: String) -> void:
 	battle_over = true
 	var dlg := AcceptDialog.new()
-	dlg.title = "Defeat"
-	dlg.dialog_text = msg + "\nGame over. Load a save or start anew."
+	dlg.title = "패배"
+	dlg.dialog_text = msg + "\n게임 오버. 세이브를 불러오거나 새로 시작하세요."
 	dlg.confirmed.connect(func(): Game.goto_menu())
 	dlg.canceled.connect(func(): Game.goto_menu())
 	hud.add_child(dlg)

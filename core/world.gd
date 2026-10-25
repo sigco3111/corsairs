@@ -4,11 +4,11 @@ extends RefCounted
 const Market := preload("res://core/market.gd")
 
 const NATIONS := {
-	"england": {"name": "England", "color": "c62828"},
-	"france": {"name": "France", "color": "1565c0"},
-	"spain": {"name": "Spain", "color": "f9a825"},
-	"holland": {"name": "Holland", "color": "ef6c00"},
-	"pirates": {"name": "Pirates", "color": "212121"},
+	"england": {"name": "잉글랜드", "color": "c62828"},
+	"france": {"name": "프랑스", "color": "1565c0"},
+	"spain": {"name": "스페인", "color": "f9a825"},
+	"holland": {"name": "네덜란드", "color": "ef6c00"},
+	"pirates": {"name": "해적", "color": "212121"},
 }
 
 ## Starting diplomacy: -1 war, 0 neutral, 1 peace.
@@ -23,31 +23,31 @@ const DEFAULT_RELATIONS := {
 ## The archipelago. Coordinates in nautical miles on a 1000x800 map.
 const ISLANDS := {
 	"oxbay": {
-		"name": "Oxbay", "nation": "england", "pos": [220, 300], "tier": 1,
+		"name": "옥스베이", "nation": "england", "pos": [220, 300], "tier": 1,
 		"exports": ["rum", "sugar"], "imports": ["weapons", "silk"],
 	},
 	"redmond": {
-		"name": "Redmond", "nation": "england", "pos": [400, 480], "tier": 3,
+		"name": "레드먼드", "nation": "england", "pos": [400, 480], "tier": 3,
 		"exports": ["tobacco", "cotton"], "imports": ["medicines", "wine"],
 	},
 	"isla_muelle": {
-		"name": "Isla Muelle", "nation": "spain", "pos": [640, 220], "tier": 3,
+		"name": "이슬라 무에예", "nation": "spain", "pos": [640, 220], "tier": 3,
 		"exports": ["coffee", "cocoa"], "imports": ["gunpowder", "planks"],
 	},
 	"conceicao": {
-		"name": "Conceicao", "nation": "spain", "pos": [780, 420], "tier": 2,
+		"name": "콘세이상", "nation": "spain", "pos": [780, 420], "tier": 2,
 		"exports": ["ebony", "spices"], "imports": ["provisions", "sailcloth"],
 	},
 	"falaise_de_fleur": {
-		"name": "Falaise de Fleur", "nation": "france", "pos": [520, 640], "tier": 3,
+		"name": "팔레즈 드 플뢰르", "nation": "france", "pos": [520, 640], "tier": 3,
 		"exports": ["wine", "silk"], "imports": ["sugar", "tobacco"],
 	},
 	"douwesen": {
-		"name": "Douwesen", "nation": "holland", "pos": [840, 620], "tier": 2,
+		"name": "다우베센", "nation": "holland", "pos": [840, 620], "tier": 2,
 		"exports": ["cotton", "provisions"], "imports": ["rum", "coffee"],
 	},
 	"quebradas": {
-		"name": "Quebradas Costillas", "nation": "pirates", "pos": [150, 620], "tier": 1,
+		"name": "케브라다스 코스티야스", "nation": "pirates", "pos": [150, 620], "tier": 1,
 		"exports": ["weapons", "gunpowder"], "imports": ["medicines", "provisions"],
 	},
 }
@@ -69,7 +69,7 @@ static func create(rng: RandomNumberGenerator) -> RefCounted:
 
 
 static func island(id: String) -> Dictionary:
-	assert(ISLANDS.has(id), "Unknown island: %s" % id)
+	assert(ISLANDS.has(id), "알 수 없는 섬: %s" % id)
 	return ISLANDS[id]
 
 

@@ -400,12 +400,12 @@ func _build_quay_and_ship() -> void:
 
 	_interactables.append({
 		"pos": Vector3(14, 1.0, -9),
-		"label": "Board your ship",
+		"label": "배에 승선",
 		"action": func(): _board_ship(),
 	})
 	_interactables.append({
 		"pos": Vector3(0, 1.0, -8),
-		"label": "Depart from %s — choose destination" % _island()["name"],
+		"label": "%s에서 출항 - 목적지 선택" % _island()["name"],
 		"action": func(): Game.goto_map(),
 	})
 
@@ -479,15 +479,15 @@ func _build_town() -> void:
 		"scatter": {"tavern": Vector3(-16, 0, 10), "store": Vector3(20, 0, 16), "yard": Vector3(46, 0, 4), "gov": Vector3(-10, 0, 64)},
 	}
 	var sp: Dictionary = SPECIAL_SPOTS.get(layout, SPECIAL_SPOTS["rows"])
-	_special_building(sp["tavern"], Vector3(12, 7, 9), Color("b0765a"), "Tavern",
-		"Tavern — hire crew, quests", "tavern", 0)
-	_special_building(sp["store"], Vector3(12, 7, 9), Color("e6d3a8"), "Store",
-		"Store — trade goods", "store", 1)
-	_special_building(sp["yard"], Vector3(14, 6, 12), Color("c9b8a0"), "Shipyard",
-		"Shipyard — ships, ammo, repairs", "shipyard", 2)
+	_special_building(sp["tavern"], Vector3(12, 7, 9), Color("b0765a"), "선술집",
+		"선술집 - 선원 고용, 퀘스트", "tavern", 0)
+	_special_building(sp["store"], Vector3(12, 7, 9), Color("e6d3a8"), "상점",
+		"상점 - 교역품", "store", 1)
+	_special_building(sp["yard"], Vector3(14, 6, 12), Color("c9b8a0"), "조선소",
+		"조선소 - 선박, 탄약, 수리", "shipyard", 2)
 	var gpos: Vector3 = sp["gov"]
-	_special_building(gpos, Vector3(18, 9, 12), Color("f2ede0"), "Governor",
-		"Governor — quests and audience", "governor", 0)
+	_special_building(gpos, Vector3(18, 9, 12), Color("f2ede0"), "총독",
+		"총독부 - 퀘스트와 알현", "governor", 0)
 	for cx in [-6.0, -2.0, 2.0, 6.0]:
 		_mesh_cyl(0.45, 0.45, 7.0, gpos + Vector3(cx, 3.5, -6.8), Color("f5f1e6"))
 
@@ -555,7 +555,7 @@ func _build_town() -> void:
 ## a roof with an overhang, sometimes a chimney. Registers a collider and
 ## builds an enterable interior behind its door.
 func _house(pos: Vector3, size: Vector3, wall_c: Color = Color.TRANSPARENT, roof_c: Color = Color.TRANSPARENT,
-		kind: String = "house", title: String = "the house", ui_tab: int = -1) -> void:
+		kind: String = "house", title: String = "집", ui_tab: int = -1) -> void:
 	var wall: Color = wall_c if wall_c.a > 0.0 else WALL_COLORS[_rng.randi_range(0, WALL_COLORS.size() - 1)]
 	var roof: Color = roof_c if roof_c.a > 0.0 else ROOF_COLORS[_rng.randi_range(0, ROOF_COLORS.size() - 1)]
 	if _house_model(pos, size, kind):
@@ -607,7 +607,7 @@ func _finish_house(pos: Vector3, size: Vector3, kind: String, title: String, ui_
 	var room := _build_interior(kind, title, ui_tab)
 	_interactables.append({
 		"pos": pos + Vector3(0, 1.0, -size.z / 2.0 - 1.2),
-		"label": "Enter %s" % title,
+		"label": "%s 들어가기" % title,
 		"action": func(): _enter_interior(room),
 	})
 
@@ -634,8 +634,9 @@ func _house_model(pos: Vector3, size: Vector3, kind: String) -> bool:
 
 func _special_building(pos: Vector3, size: Vector3, wall: Color, sign_text: String,
 		hint: String, kind: String, ui_tab: int) -> void:
-	_house(pos, size, wall, Color.TRANSPARENT, kind, "the %s" % sign_text.to_lower(), ui_tab)
+	_house(pos, size, wall, Color.TRANSPARENT, kind, "%s" % sign_text.to_lower(), ui_tab)
 	var sign := Label3D.new()
+	sign.font = preload("res://assets/fonts/NanumGothic-Regular.ttf")
 	sign.text = sign_text
 	sign.font_size = 220
 	sign.pixel_size = 0.01
@@ -731,7 +732,7 @@ func _build_interior(kind: String, title: String, ui_tab: int) -> Dictionary:
 	var spawn := base + Vector3(0, 0.1, d / 2.0 - 1.6)
 	_interactables.append({
 		"pos": base + Vector3(0, 1.0, d / 2.0 - 0.8),
-		"label": "Leave %s" % title,
+		"label": "%s 나가기" % title,
 		"action": func(): _exit_interior(),
 	})
 	return {
@@ -752,7 +753,7 @@ func _furnish(kind: String, base: Vector3, w: float, d: float, ui_tab: int, titl
 				_table_with_stools(base + tp)
 			_fireplace(base + Vector3(-w / 2.0 + 0.7, 0, -d * 0.2))
 			_room_npc(base + Vector3(w / 2.0 - 2.4, 0, 0), Color("8d3a2e"),
-				"Barkeeper — crew, quests & rumors", ui_tab)
+				"주모 - 선원, 퀘스트, 소문", ui_tab)
 		"store":
 			for sx in [-w * 0.28, w * 0.05]:
 				_shelf(base + Vector3(sx, 0, -d / 2.0 + 0.9))
@@ -762,7 +763,7 @@ func _furnish(kind: String, base: Vector3, w: float, d: float, ui_tab: int, titl
 					base + Vector3(-w * 0.3 + i * 0.9, 0.35, d * 0.28),
 					[Color("b0765a"), Color("6b7d4a"), Color("c9a24a"), Color("8d3a2e"), Color("35405c")][i])
 			_room_npc(base + Vector3(w * 0.28, 0, -0.6), Color("6b7d4a"),
-				"Merchant — buy & sell goods", ui_tab)
+				"상인 - 교역품 매매", ui_tab)
 		"shipyard":
 			for i in 3:
 				var log := _mesh_cyl(0.28, 0.28, 5.0, base + Vector3(-w * 0.25, 0.3 + i * 0.5, -d * 0.3 + i * 0.1), Color("6b4a2b"))
@@ -772,7 +773,7 @@ func _furnish(kind: String, base: Vector3, w: float, d: float, ui_tab: int, titl
 			for i in 4:
 				_mesh_cyl(0.3, 0.34, 0.8, base + Vector3(-w * 0.15 + i * 1.1, 0.4, d * 0.28), Color("5d4024"))
 			_room_npc(base + Vector3(w * 0.22, 0, 0.8), Color("35405c"),
-				"Shipwright — ships, ammo & repairs", ui_tab)
+				"조선공 - 선박, 탄약, 수리", ui_tab)
 		"governor":
 			_mesh_box(Vector3(w * 0.6, 0.06, d * 0.5), base + Vector3(0, 0.03, 0), Color("7a2c2c"))
 			_mesh_box(Vector3(2.8, 0.9, 1.3), base + Vector3(0, 0.45, -d * 0.22), Color("4a2e15"))
@@ -781,7 +782,7 @@ func _furnish(kind: String, base: Vector3, w: float, d: float, ui_tab: int, titl
 				_mesh_cyl(0.35, 0.4, 4.0, base + Vector3(cx, 2.0, -d * 0.1), Color("f0ece0"))
 			_shelf(base + Vector3(w * 0.32, 0, -d / 2.0 + 0.9))
 			_room_npc(base + Vector3(0, 0, -d * 0.16), Color("35405c"),
-				"Governor — quests and audience", ui_tab)
+				"총독부 - 퀘스트와 알현", ui_tab)
 		_:
 			# A commoner's home: bed, table, chest, sometimes someone in.
 			_mesh_box(Vector3(2.2, 0.5, 1.2), base + Vector3(-w * 0.28, 0.25, -d * 0.3), Color("6e3a28"))
@@ -921,15 +922,15 @@ func _sail_tick(delta: float) -> void:
 	var near_dock: bool = _ship_node.position.distance_to(ANCHOR_POS) < 40.0
 	var far_out: bool = _ship_node.position.z < -260.0
 	if near_dock:
-		_hint.text = "[E]  Dock at the quay   |   [Enter]  Open sea — world map"
+		_hint.text = "[E]  부두에 정박   |   [Enter]  먼바다 - 세계 지도"
 		if Input.is_action_just_pressed("interact"):
 			_dock_ship()
 	elif far_out:
-		_hint.text = "[E / Enter]  Set sail for the open sea"
+		_hint.text = "[E / Enter]  먼바다로 출항"
 		if Input.is_action_just_pressed("interact"):
 			Game.goto_open_sea_from_port()
 	else:
-		_hint.text = "W/S — sails, A/D — rudder | %.1f kn | [Enter]  Open sea — world map" % speed
+		_hint.text = "W/S - 돛, A/D - 키 | %.1f노트 | [Enter]  먼바다 - 세계 지도" % speed
 	if Input.is_key_pressed(KEY_ENTER) or Input.is_key_pressed(KEY_KP_ENTER):
 		Game.goto_open_sea_from_port()
 
@@ -1030,7 +1031,7 @@ func _build_hud() -> void:
 	_status.add_theme_color_override("font_color", Color("e8c872"))
 	_status.add_theme_font_size_override("font_size", 15)
 	var isl := _island()
-	_status.text = "%s (%s) | Day %d | %d gold | WASD — walk, E — enter, RMB — camera, Tab — port menu" % [
+	_status.text = "%s (%s) | %d일차 | %d골드 | WASD - 걷기, E - 들어가기, 우클릭 - 카메라, Tab - 항구 메뉴" % [
 		isl["name"], World.NATIONS[isl["nation"]]["name"], Game.state.day, Game.state.character.gold]
 	panel.add_child(_status)
 

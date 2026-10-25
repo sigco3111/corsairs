@@ -6,15 +6,15 @@ const SKILLS := ["leadership", "fencing", "navigation", "accuracy", "cannons",
 	"boarding", "defense", "repair", "trade", "luck"]
 
 const SKILL_NAMES := {
-	"leadership": "Leadership", "fencing": "Fencing", "navigation": "Navigation",
-	"accuracy": "Accuracy", "cannons": "Cannons", "boarding": "Boarding",
-	"defense": "Defense", "repair": "Repair", "trade": "Trade", "luck": "Luck",
+	"leadership": "통솔", "fencing": "펜싱", "navigation": "항해",
+	"accuracy": "명중", "cannons": "대포", "boarding": "백병전",
+	"defense": "방어", "repair": "수리", "trade": "교역", "luck": "행운",
 }
 
 const MAX_SKILL := 10
 const SKILL_POINTS_PER_LEVEL := 2
 
-var char_name: String = "Captain"
+var char_name: String = "선장"
 var nation: String = "england"
 var level: int = 1
 var xp: int = 0
@@ -25,7 +25,7 @@ var max_hp: int = 80
 var hp: int = 80
 
 
-static func create(name := "Captain", p_nation := "england") -> RefCounted:
+static func create(name := "선장", p_nation := "england") -> RefCounted:
 	var c = load("res://core/character.gd").new()
 	c.char_name = name
 	c.nation = p_nation

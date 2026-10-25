@@ -58,7 +58,7 @@ func goto_menu() -> void:
 
 ## The open sea — the sailable world map. Resumes from open_sea_ctx.
 func goto_map() -> void:
-	_change_scene("res://scenes/open_sea.tscn", "The open sea")
+	_change_scene("res://scenes/open_sea.tscn", "먼바다")
 
 
 ## Cast off from the current port and head for the open sea.
@@ -70,7 +70,7 @@ func goto_open_sea_from_port() -> void:
 
 ## The walkable 3D town — the default view when in a port.
 func goto_port() -> void:
-	var title := "Landfall"
+	var title := "상륙"
 	if state != null and state.current_island != "":
 		title = load("res://core/world.gd").island(state.current_island)["name"]
 	_change_scene("res://scenes/port_town.tscn", title)
@@ -84,7 +84,7 @@ func goto_port_ui(tab: int = -1) -> void:
 
 func goto_sea_battle(encounter: Dictionary) -> void:
 	pending_encounter = encounter
-	_change_scene("res://scenes/sea.tscn", "Battle stations!")
+	_change_scene("res://scenes/sea.tscn", "전투 준비!")
 
 
 ## Deck-scale sailing with no enemy — Enter on the world map. A peaceful
@@ -92,13 +92,13 @@ func goto_sea_battle(encounter: Dictionary) -> void:
 func goto_free_sail(company: Dictionary = {}) -> void:
 	pending_encounter = {}
 	free_sail_company = company
-	_change_scene("res://scenes/sea.tscn", "Open waters")
+	_change_scene("res://scenes/sea.tscn", "넓은 바다")
 
 
 ## Third-person melee on the enemy deck; the fight decides the encounter.
 func start_boarding(enemy: RefCounted, nation: String) -> void:
 	boarding_ctx = {"enemy": enemy, "nation": nation}
-	_change_scene("res://scenes/boarding.tscn", "Boarding!")
+	_change_scene("res://scenes/boarding.tscn", "백병전 돌입!")
 
 
 # --- Loading screen ---
@@ -157,7 +157,7 @@ func _build_loading_overlay() -> void:
 	box.add_child(_loading_lbl)
 
 	var sub := Label.new()
-	sub.text = "Loading..."
+	sub.text = "로딩 중..."
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub.add_theme_font_size_override("font_size", 16)
 	sub.add_theme_color_override("font_color", Color(0.7, 0.72, 0.78))

@@ -245,6 +245,7 @@ func _build_island(id: String) -> void:
 
 	# Floating name, readable from any direction.
 	var name_lbl := Label3D.new()
+	name_lbl.font = preload("res://assets/fonts/NanumGothic-Regular.ttf")
 	name_lbl.text = isl["name"]
 	name_lbl.font_size = 40
 	name_lbl.outline_size = 10
@@ -394,14 +395,14 @@ func _sail(delta: float) -> void:
 	if dock_id != "":
 		var isl: Dictionary = World.island(dock_id)
 		if Game.state.world.is_port_hostile(dock_id):
-			_hint.text = "%s: the port is closed to you (reputation)" % isl["name"]
+			_hint.text = "%s: 평판이 낮아 항구 출입이 금지되었습니다" % isl["name"]
 		else:
-			_hint.text = "[E / Enter]  Drop anchor at %s" % isl["name"]
+			_hint.text = "[E / Enter]  %s에 닻 내리기" % isl["name"]
 			if Input.is_action_just_pressed("interact"):
 				_dock(dock_id)
 	else:
 		var near: String = OpenSea.nearest_island(_ship_node.position)
-		_hint.text = "W/S — sails, A/D — rudder | %.1f kn | course for %s" % [speed, World.island(near)["name"]]
+		_hint.text = "W/S - 돛, A/D - 키 | %.1f노트 | %s 항로" % [speed, World.island(near)["name"]]
 
 
 func _dock(island_id: String) -> void:
@@ -414,7 +415,7 @@ func _dock(island_id: String) -> void:
 func _on_day_passed() -> void:
 	var log: Dictionary = Game.state.sea_day()
 	if int(log["starved"]) > 0:
-		_flash("Provisions ran out — %d sailors starved!" % int(log["starved"]))
+		_flash("식량이 바닥났습니다 - 선원 %d명이 굶어 죽었습니다!" % int(log["starved"]))
 	var rng: RandomNumberGenerator = Game.state.rng
 	if _npcs.size() < NPC_LIMIT and rng.randf() < OpenSea.ENCOUNTER_CHANCE_PER_DAY:
 		_spawn_sail(rng.randf_range(260.0, 420.0))
@@ -440,7 +441,7 @@ func _spawn_sail(dist: float) -> void:
 		"enc": enc,
 	})
 	if enc["hostile"]:
-		_flash("A hostile sail on the horizon — %s %s!" % [
+		_flash("수평선에 적 발견 - %s %s!" % [
 			World.NATIONS[enc["nation"]]["name"], enc["ship_type"]])
 
 
@@ -499,7 +500,7 @@ func _update_camera(delta: float) -> void:
 
 func _update_hud() -> void:
 	var s = Game.state
-	_status.text = "Day %d  |  %d gold  |  Provisions %d  |  Crew %d  |  Wind %d°, %d kn  |  M — chart, Enter — helm" % [
+	_status.text = "%d일차  |  %d골드  |  식량 %d  |  선원 %d  |  바람 %d°, %d노트  |  M - 해도, Enter - 조타" % [
 		s.day, s.character.gold, int(s.ship.cargo.get("provisions", 0)), s.ship.crew,
 		int(s.wind["from"]), int(s.wind["strength"])]
 	if _time > _log_until:
@@ -566,7 +567,7 @@ class SeaChart:
 		draw_texture_rect(_parchment, Rect2(Vector2.ZERO, sz), false)
 		var font := get_theme_default_font()
 		var ink := Color(0.24, 0.15, 0.07)
-		draw_string(font, Vector2(0, sz.y - 30), "Sea chart  (M to close)",
+		draw_string(font, Vector2(0, sz.y - 30), "해도  (M 닫기)",
 			HORIZONTAL_ALIGNMENT_CENTER, sz.x, 15, ink)
 		for id in World.island_ids():
 			var isl: Dictionary = World.island(id)

@@ -88,4 +88,6 @@ textures/vram_compression/import_etc2_astc=true
 
 [gui]
 
+theme/custom_font="res://assets/fonts/NanumGothic-Regular.ttf"
+
 theme/custom="res://assets/ui_theme.tres"

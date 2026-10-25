@@ -30,7 +30,7 @@ static func new_game(captain_name: String, nation: String, seed_value: int = -1)
 	else:
 		g.rng.randomize()
 	g.character = Character.create(captain_name, nation)
-	g.ship = Ship.create("lugger", "Fortune")
+	g.ship = Ship.create("lugger", "포춘")
 	g.ship.ammo_stock = {"balls": 120, "knippels": 40, "grapeshot": 40, "bombs": 0}
 	g.ship.add_cargo("provisions", 30)
 	g.ship.add_cargo("planks", 15)
@@ -43,8 +43,8 @@ static func new_game(captain_name: String, nation: String, seed_value: int = -1)
 
 ## Voyage to an island. Returns a log: days at sea, encounters, events.
 func sail_to(island_id: String) -> Dictionary:
-	assert(current_island != "", "Already at sea")
-	assert(island_id != current_island, "Already here")
+	assert(current_island != "", "이미 바다에 있습니다")
+	assert(island_id != current_island, "이미 이곳에 있습니다")
 	var dist := World.distance(current_island, island_id)
 	var days := maxi(int(ceil(dist / 120.0)), 1)
 	var log := {"days": days, "encounter": null, "arrived": island_id, "wages_paid": 0, "starved": 0, "completed_quests": []}

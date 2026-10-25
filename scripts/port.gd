@@ -1,4 +1,4 @@
-## Port: "Port", "Market", "Shipyard" and "Captain" tabs.
+## Port: "항구", "시장", "조선소" and "선장" tabs.
 extends Control
 
 const World := preload("res://core/world.gd")
@@ -50,7 +50,7 @@ func _ready() -> void:
 	header_row.add_child(_header)
 
 	var exit_btn := Button.new()
-	exit_btn.text = "Back to town (Esc)"
+	exit_btn.text = "마을로 돌아가기 (Esc)"
 	exit_btn.pressed.connect(func(): Game.goto_port())
 	header_row.add_child(exit_btn)
 
@@ -86,7 +86,7 @@ func _generate_quest_offers() -> void:
 func _rebuild() -> void:
 	var s = Game.state
 	var isl := _island()
-	_header.text = "%s — %s colony | Day %d | %d gold | %s: hull %d%%, crew %d/%d" % [
+	_header.text = "%s - %s 식민지 | %d일차 | %d골드 | %s: 선체 %d%%, 선원 %d/%d" % [
 		isl["name"], World.NATIONS[isl["nation"]]["name"], s.day, s.character.gold,
 		s.ship.custom_name, int(s.ship.hull_frac() * 100), s.ship.crew, s.ship.spec()["max_crew"]]
 
@@ -95,12 +95,12 @@ func _rebuild() -> void:
 	for c in _tabs.get_children():
 		_tabs.remove_child(c)
 		c.queue_free()
-	_tabs.add_child(_with_portrait(_build_port_tab(), "governor", "The Governor"))
-	_tabs.add_child(_with_portrait(_build_market_tab(), "merchant", "The Merchant"))
-	_tabs.add_child(_with_portrait(_build_shipyard_tab(), "shipwright", "The Shipwright"))
-	_tabs.add_child(_with_portrait(_build_captain_tab(), "captain", "Captain " + s.character.char_name))
+	_tabs.add_child(_with_portrait(_build_port_tab(), "governor", "총독"))
+	_tabs.add_child(_with_portrait(_build_market_tab(), "merchant", "상인"))
+	_tabs.add_child(_with_portrait(_build_shipyard_tab(), "shipwright", "조선공"))
+	_tabs.add_child(_with_portrait(_build_captain_tab(), "captain", "선장 " + s.character.char_name))
 	for i in 4:
-		_tabs.set_tab_title(i, ["Port", "Market", "Shipyard", "Captain"][i])
+		_tabs.set_tab_title(i, ["항구", "시장", "조선소", "선장"][i])
 	if Game.port_tab >= 0:
 		_tabs.current_tab = Game.port_tab
 		Game.port_tab = -1
@@ -153,7 +153,7 @@ func _label(text: String, color := "cfe3f5") -> Label:
 # --- Port tab ---
 
 func _build_port_tab() -> Control:
-	var sc := _scroll_tab("Port")
+	var sc := _scroll_tab("항구")
 	var box := VBoxContainer.new()
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_theme_constant_override("separation", 10)
@@ -162,7 +162,7 @@ func _build_port_tab() -> Control:
 	var isl := _island()
 
 	var rep: int = s.world.reputation(isl["nation"])
-	box.add_child(_label("%s's attitude toward you: %d" % [World.NATIONS[isl["nation"]]["name"], rep],
+	box.add_child(_label("당신에 대한 %s의 태도: %d" % [World.NATIONS[isl["nation"]]["name"], rep],
 		"81c784" if rep >= 0 else "e57373"))
 
 	var row := HBoxContainer.new()
@@ -170,72 +170,72 @@ func _build_port_tab() -> Control:
 	box.add_child(row)
 
 	var town := Button.new()
-	town.text = "Back to town"
+	town.text = "마을로"
 	town.pressed.connect(func(): Game.goto_port())
 	row.add_child(town)
 
 	var sail := Button.new()
-	sail.text = "Set sail from %s — the open sea" % isl["name"]
+	sail.text = "%s에서 출항 - 먼바다로" % isl["name"]
 	sail.pressed.connect(func(): Game.goto_open_sea_from_port())
 	row.add_child(sail)
 
 	var hire := Button.new()
-	hire.text = "Hire 10 sailors (%d gold)" % (10 * 20)
+	hire.text = "선원 10명 고용 (%d골드)" % (10 * 20)
 	hire.pressed.connect(func():
 		if not Game.state.hire_crew(10):
-			OS.alert("Not enough gold or berths.", "Tavern")
+			OS.alert("골드 또는 선원 숙소가 부족합니다.", "선술집")
 		_rebuild())
 	row.add_child(hire)
 
 	var repair := Button.new()
-	repair.text = "Repair ship"
+	repair.text = "선박 수리"
 	repair.pressed.connect(func():
 		var cost: int = Game.state.repair_ship_at_shipyard()
 		if cost < 0:
-			OS.alert("Not enough gold for repairs.", "Shipyard")
+			OS.alert("수리 비용이 부족합니다.", "조선소")
 		elif cost == 0:
-			OS.alert("The ship is in perfect shape.", "Shipyard")
+			OS.alert("선박 상태가 완벽합니다.", "조선소")
 		_rebuild())
 	row.add_child(repair)
 
 	var save_btn := Button.new()
-	save_btn.text = "Save game"
-	save_btn.pressed.connect(func(): Game.save_game(); OS.alert("Game saved.", "Corsairs"))
+	save_btn.text = "게임 저장"
+	save_btn.pressed.connect(func(): Game.save_game(); OS.alert("저장되었습니다.", "Corsairs"))
 	row.add_child(save_btn)
 
 	box.add_child(HSeparator.new())
-	box.add_child(_label("— The governor offers —", "e8c872"))
+	box.add_child(_label("· 총독의 제안 ·", "e8c872"))
 	for offer in _quest_offers:
 		var qrow := HBoxContainer.new()
 		qrow.add_theme_constant_override("separation", 10)
 		box.add_child(qrow)
-		var desc := "%s | reward %d gold | due: day %d" % [offer["title"], offer["reward"], offer["deadline_day"]]
+		var desc := "%s | 보상 %d골드 | 기한: %d일차" % [offer["title"], offer["reward"], offer["deadline_day"]]
 		if offer["kind"] == "deliver":
-			desc += " | cargo: %s ×%d" % [Goods.get_type(offer["goods"])["name"], offer["units"]]
+			desc += " | 화물: %s ×%d" % [Goods.get_type(offer["goods"])["name"], offer["units"]]
 		qrow.add_child(_label(desc))
 		var take := Button.new()
-		take.text = "Accept"
+		take.text = "수락"
 		take.pressed.connect(func():
 			if Game.state.quests.accept(offer, Game.state.ship):
 				_quest_offers.erase(offer)
 			else:
-				OS.alert("Not enough cargo space!", "Governor")
+				OS.alert("선창 공간이 부족합니다!", "총독")
 			_rebuild())
 		qrow.add_child(take)
 
 	box.add_child(HSeparator.new())
-	box.add_child(_label("— Active quests —", "e8c872"))
+	box.add_child(_label("· 진행 중인 퀘스트 ·", "e8c872"))
 	if s.quests.active.is_empty():
-		box.add_child(_label("No active quests."))
+		box.add_child(_label("진행 중인 퀘스트가 없습니다."))
 	for q in s.quests.active:
-		box.add_child(_label("• %s (by day %d, %d gold)" % [q["title"], q["deadline_day"], q["reward"]]))
+		box.add_child(_label("• %s (기한 %d일차, %d골드)" % [q["title"], q["deadline_day"], q["reward"]]))
 	return sc
 
 
 # --- Market tab ---
 
 func _build_market_tab() -> Control:
-	var sc := _scroll_tab("Market")
+	var sc := _scroll_tab("시장")
 	var grid := GridContainer.new()
 	grid.columns = 7
 	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -247,7 +247,7 @@ func _build_market_tab() -> Control:
 	var m = s.world.market(s.current_island)
 	var trade: int = s.character.skill("trade")
 
-	for h in ["Goods", "Stock", "Buy at", "Sell at", "In hold", "", ""]:
+	for h in ["품목", "재고", "구매가", "판매가", "보유", "", ""]:
 		grid.add_child(_label(h, "e8c872"))
 
 	for g in Goods.all_ids():
@@ -257,26 +257,26 @@ func _build_market_tab() -> Control:
 		var is_import: bool = g in m.imports
 		var name_color := "81c784" if is_export else ("e57373" if is_import else "cfe3f5")
 		# Words, not arrow glyphs — the web build's font has no arrows.
-		grid.add_child(_label(info["name"] + ("  (export)" if is_export else ("  (import)" if is_import else "")), name_color))
+		grid.add_child(_label(info["name"] + ("  (수출)" if is_export else ("  (수입)" if is_import else "")), name_color))
 		grid.add_child(_label(str(m.stock.get(g, 0))))
-		grid.add_child(_label("%d g" % m.buy_price(g, trade)))
-		grid.add_child(_label("%d g" % m.sell_price(g, trade)))
+		grid.add_child(_label("%d골드" % m.buy_price(g, trade)))
+		grid.add_child(_label("%d골드" % m.sell_price(g, trade)))
 		grid.add_child(_label(str(in_hold)))
 
 		var buy := Button.new()
-		buy.text = "Buy 10"
+		buy.text = "10개 구매"
 		buy.pressed.connect(func():
 			if m.player_buy(g, 10, s.character, s.ship, trade) < 0:
-				OS.alert("Deal impossible: no gold, stock or space.", "Market")
+				OS.alert("거래 불가: 골드, 재고 또는 선창 공간이 부족합니다.", "시장")
 			_rebuild())
 		grid.add_child(buy)
 
 		var sell := Button.new()
-		sell.text = "Sell 10"
+		sell.text = "10개 판매"
 		sell.disabled = in_hold < 10
 		sell.pressed.connect(func():
 			if m.player_sell(g, 10, s.character, s.ship, trade) < 0:
-				OS.alert("You don't have that much cargo.", "Market")
+				OS.alert("보유한 화물이 그만큼 없습니다.", "시장")
 			_rebuild())
 		grid.add_child(sell)
 
@@ -286,7 +286,7 @@ func _build_market_tab() -> Control:
 # --- Shipyard tab ---
 
 func _build_shipyard_tab() -> Control:
-	var sc := _scroll_tab("Shipyard")
+	var sc := _scroll_tab("조선소")
 	var box := VBoxContainer.new()
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_theme_constant_override("separation", 8)
@@ -294,24 +294,24 @@ func _build_shipyard_tab() -> Control:
 	var s = Game.state
 	var isl := _island()
 
-	box.add_child(_label("— Ammunition (hold space: %d) —" % s.ship.cargo_free(), "e8c872"))
+	box.add_child(_label("· 탄약 (남은 선창: %d) ·" % s.ship.cargo_free(), "e8c872"))
 	var arow := HBoxContainer.new()
 	arow.add_theme_constant_override("separation", 10)
 	box.add_child(arow)
 	for a in Ammo.ORDER:
 		var t := Ammo.get_type(a)
 		var b := Button.new()
-		b.text = "%s ×50 (%d g) [have %d]" % [t["name"], t["price"] * 50, s.ship.ammo_stock.get(a, 0)]
+		b.text = "%s ×50 (%d골드) [보유 %d]" % [t["name"], t["price"] * 50, s.ship.ammo_stock.get(a, 0)]
 		b.pressed.connect(func():
 			if not Game.state.buy_ammo(a, 50, t["price"]):
-				OS.alert("Not enough gold.", "Shipyard")
+				OS.alert("골드가 부족합니다.", "조선소")
 			_rebuild())
 		arow.add_child(b)
 
 	box.add_child(HSeparator.new())
-	box.add_child(_label("— Ships for sale (yours is traded in) —", "e8c872"))
+	box.add_child(_label("· 판매 중인 선박 (내 배는 교체 비용에 반영) ·", "e8c872"))
 	var trade_in := int(s.ship.spec()["price"] * 0.5 * s.ship.hull_frac())
-	box.add_child(_label("Your %s trades in for: %d gold" % [s.ship.spec()["name"], trade_in]))
+	box.add_child(_label("내 %s 교체 반영액: %d골드" % [s.ship.spec()["name"], trade_in]))
 
 	for id in ShipTypes.available_for_shipyard(int(isl["tier"])):
 		if id == s.ship.type_id:
@@ -320,15 +320,15 @@ func _build_shipyard_tab() -> Control:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 10)
 		box.add_child(row)
-		row.add_child(_label("%s (rank %d): hull %d, guns %d, hold %d, speed %.1f — %d gold" % [
+		row.add_child(_label("%s (등급 %d): 선체 %d, 함포 %d, 선창 %d, 속도 %.1f - %d골드" % [
 			t["name"], t["rank"], t["hull"], t["cannons"], t["cargo"], t["base_speed"], t["price"]]))
 		var buy := Button.new()
 		var to_pay := maxi(int(t["price"]) - trade_in, 0)
-		buy.text = "Buy (pay %d)" % to_pay
+		buy.text = "구매 (%d골드 지불)" % to_pay
 		buy.disabled = not s.character.can_afford(to_pay)
 		buy.pressed.connect(func():
 			if Game.state.buy_ship(id):
-				OS.alert("Congratulations on your new %s!" % t["name"], "Shipyard")
+				OS.alert("새 %s 취득을 축하합니다!" % t["name"], "조선소")
 			_rebuild())
 		row.add_child(buy)
 	return sc
@@ -337,15 +337,15 @@ func _build_shipyard_tab() -> Control:
 # --- Captain tab ---
 
 func _build_captain_tab() -> Control:
-	var sc := _scroll_tab("Captain")
+	var sc := _scroll_tab("선장")
 	var box := VBoxContainer.new()
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_theme_constant_override("separation", 8)
 	sc.add_child(box)
 	var c = Game.state.character
 
-	box.add_child(_label("%s, level %d (%s)" % [c.char_name, c.level, World.NATIONS[c.nation]["name"]], "e8c872"))
-	box.add_child(_label("XP: %d / %d | Free skill points: %d" % [c.xp, Character.xp_for_level(c.level), c.free_skill_points]))
+	box.add_child(_label("%s, 레벨 %d (%s)" % [c.char_name, c.level, World.NATIONS[c.nation]["name"]], "e8c872"))
+	box.add_child(_label("XP: %d / %d | 남은 스킬 포인트: %d" % [c.xp, Character.xp_for_level(c.level), c.free_skill_points]))
 	box.add_child(HSeparator.new())
 
 	for skill_id in Character.SKILLS:
@@ -374,7 +374,7 @@ func _build_captain_tab() -> Control:
 			row.add_child(plus)
 
 	box.add_child(HSeparator.new())
-	box.add_child(_label("— Standing with the nations —", "e8c872"))
+	box.add_child(_label("· 각국과의 관계 ·", "e8c872"))
 	for n in World.NATIONS:
 		var rep: int = Game.state.world.reputation(n)
 		box.add_child(_label("%s: %d" % [World.NATIONS[n]["name"], rep],

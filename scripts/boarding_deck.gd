@@ -206,7 +206,7 @@ func _build_hud() -> void:
 	add_child(hud)
 
 	var title := Label.new()
-	title.text = "BOARDING — %s (%s)" % [enemy_ship.custom_name, World.NATIONS[enemy_nation]["name"]]
+	title.text = "백병전 - %s (%s)" % [enemy_ship.custom_name, World.NATIONS[enemy_nation]["name"]]
 	title.position = Vector2(420, 12)
 	title.add_theme_font_size_override("font_size", 22)
 	title.add_theme_color_override("font_color", Color("e8c872"))
@@ -231,13 +231,13 @@ func _build_hud() -> void:
 	_hp_bar.show_percentage = false
 	hud.add_child(_hp_bar)
 	var hp_lbl := Label.new()
-	hp_lbl.text = "Captain's health"
+	hp_lbl.text = "선장 체력"
 	hp_lbl.position = Vector2(16, 636)
 	hp_lbl.add_theme_color_override("font_color", Color("cfe3f5"))
 	hud.add_child(hp_lbl)
 
 	_hint = Label.new()
-	_hint.text = "WASD — move, Space / LMB — strike, RMB — camera"
+	_hint.text = "WASD - 이동, Space / 좌클릭 - 공격, 우클릭 - 카메라"
 	_hint.position = Vector2(430, 690)
 	_hint.add_theme_color_override("font_color", Color("9db4c8"))
 	hud.add_child(_hint)
@@ -325,8 +325,8 @@ func _physics_process(delta: float) -> void:
 	camera.look_at(proot.position + Vector3(0, 1.4, 0))
 
 	# --- HUD & end conditions ---
-	_lbl_ours.text = "Our crew: %d" % _ally_crew_now()
-	_lbl_theirs.text = "Enemy crew: %d" % _enemy_crew_now()
+	_lbl_ours.text = "아군 선원: %d" % _ally_crew_now()
+	_lbl_theirs.text = "적 선원: %d" % _enemy_crew_now()
 	_hp_bar.value = player_hp
 
 	var enemies_left := false
@@ -439,9 +439,9 @@ func _win() -> void:
 		player_ship.ammo_stock[a] = int(player_ship.ammo_stock.get(a, 0)) + int(lt["ammo"][a])
 	var outcome: Dictionary = Game.state.on_enemy_sunk(enemy_ship, enemy_nation)
 	Game.save_game()
-	var msg := "The deck is ours! Seized %d gold and the cargo. XP +%d.%s" % [
-		lt["gold"], outcome["xp"], " Level up!" if outcome["level_up"] else ""]
-	_end_dialog("Victory", msg, func(): Game.goto_map())
+	var msg := "갑판을 점령했습니다! %d골드와 화물을 노획했습니다. XP +%d.%s" % [
+		lt["gold"], outcome["xp"], " 레벨 업!" if outcome["level_up"] else ""]
+	_end_dialog("승리", msg, func(): Game.goto_map())
 
 
 func _retreat() -> void:
@@ -449,10 +449,10 @@ func _retreat() -> void:
 	player_ship.crew = _ally_crew_now()
 	Game.save_game()
 	if player_ship.is_crew_critical():
-		_end_dialog("Defeat", "The boarding failed and too few hands remain.\nGame over — load a save or start anew.",
+		_end_dialog("패배", "백병전에 실패하고 남은 선원이 너무 적습니다.\n게임 오버 - 세이브를 불러오거나 새로 시작하세요.",
 			func(): Game.goto_menu())
 	else:
-		_end_dialog("Repelled", "Wounded, you are carried back aboard.\nThe enemy cuts the ropes and slips away.",
+		_end_dialog("격퇴", "부상당한 당신은 배로 옮겨졌습니다.\n적은 밧줄을 끊고 달아납니다.",
 			func(): Game.goto_map())
 
 
